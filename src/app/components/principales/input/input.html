@@ -1,0 +1,40 @@
+<div class="field">
+  @if (label) {
+    <label class="field__label" [for]="inputId">
+      {{ label }}
+      @if (required) {
+        <span class="field__required" aria-hidden="true">*</span>
+      }
+    </label>
+  }
+  <div class="field__wrapper">
+    <input
+      class="field__control"
+      [class.field__control--error]="error"
+      [class.field__control--con-boton]="type === 'password'"
+      [id]="inputId"
+      [type]="tipoEfectivo"
+      [placeholder]="placeholder"
+      [disabled]="disabled"
+      [value]="value"
+      (input)="alCambiar($any($event.target).value)"
+      (blur)="alTocar()"
+    />
+    @if (type === 'password') {
+      <button
+        class="field__boton-ojo"
+        type="button"
+        tabindex="-1"
+        (click)="alternarPassword()"
+        [attr.aria-label]="mostrarPassword ? 'Ocultar contrasena' : 'Mostrar contrasena'"
+      >
+        <app-icon [name]="mostrarPassword ? 'eye-slash' : 'eye'" [size]="18"></app-icon>
+      </button>
+    }
+  </div>
+  @if (error) {
+    <span class="field__message field__message--error">{{ error }}</span>
+  } @else if (hint) {
+    <span class="field__message">{{ hint }}</span>
+  }
+</div>

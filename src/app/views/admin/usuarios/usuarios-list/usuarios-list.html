@@ -1,0 +1,108 @@
+<div class="usuarios-list__encabezado">
+  <div>
+    <span class="eyebrow">Panel admin</span>
+    <h1 class="usuarios-list__titulo heading--display">Usuarios</h1>
+    <p class="text-body">Gestiona quien puede acceder al panel de administracion</p>
+  </div>
+  <app-button (click)="abrirCrear()">
+    <span class="usuarios-list__nuevo">
+      <app-icon name="plus" weight="bold" [size]="16"></app-icon>
+      Nuevo usuario
+    </span>
+  </app-button>
+</div>
+
+<div class="usuarios-list__filtros">
+  <app-search-bar
+    placeholder="Buscar por nombre o telefono"
+    [value]="busqueda()"
+    (valueChange)="busqueda.set($event)"
+  ></app-search-bar>
+</div>
+
+<app-data-table
+  [columnas]="columnas"
+  [filas]="filtrados()"
+  [cargando]="cargando()"
+  tituloVacio="No hay usuarios"
+  descripcionVacio="Crea un usuario nuevo o ajusta la busqueda."
+>
+  <ng-template #acciones let-usuario>
+    <div class="usuarios-list__acciones">
+      <app-badge [tone]="usuario.activo ? 'gum' : 'basalt'">
+        {{ usuario.activo ? 'Activo' : 'Inactivo' }}
+      </app-badge>
+
+      <div class="usuarios-list__acciones-botones">
+        <button class="usuarios-list__accion-btn" type="button" (click)="abrirVer(usuario)" aria-label="Ver usuario">
+          <app-icon name="eye" [size]="20"></app-icon>
+        </button>
+        <button class="usuarios-list__accion-btn" type="button" (click)="abrirEditar(usuario)" aria-label="Editar usuario">
+          <app-icon name="pencil-simple" [size]="20"></app-icon>
+        </button>
+        <button
+          class="usuarios-list__accion-btn"
+          [class.usuarios-list__accion-btn--peligro]="usuario.activo"
+          type="button"
+          [disabled]="esUsuarioActual(usuario)"
+          [title]="esUsuarioActual(usuario) ? 'No puedes desactivar tu propia cuenta' : ''"
+          (click)="alternarStatus(usuario)"
+          [attr.aria-label]="usuario.activo ? 'Desactivar usuario' : 'Activar usuario'"
+        >
+          <app-icon [name]="usuario.activo ? 'prohibit' : 'check-circle'" [size]="20"></app-icon>
+        </button>
+      </div>
+    </div>
+  </ng-template>
+</app-data-table>
+
+<app-modal [open]="modalAbierto()" [title]="tituloModal()" (closed)="cerrarModal()">
+  @if (cargandoModal()) {
+    <div class="usuarios-list__modal-cargando">
+      <app-spinner></app-spinner>
+    </div>
+  } @else if (modoModal() === 'ver' && usuarioModal(); as u) {
+    <div class="usuarios-list__ver">
+      <div class="usuarios-list__ver-fila">
+        <span class="eyebrow">{{ u.rol }}</span>
+        <app-badge [tone]="u.activo ? 'gum' : 'basalt'">{{ u.activo ? 'Activo' : 'Inactivo' }}</app-badge>
+      </div>
+
+      <div>
+        <span class="usuarios-list__ver-label">Telefono</span>
+        <p class="text-body text-body--medium">{{ u.telefono }}</p>
+      </div>
+
+      <div class="usuarios-list__ver-acciones">
+        <app-button variant="outline" [fullWidth]="true" (click)="pasarAEditar()">Editar usuario</app-button>
+        @if (!esUsuarioActual(u)) {
+          <app-button
+            [variant]="u.activo ? 'danger' : 'primary'"
+            [fullWidth]="true"
+            [loading]="cambiandoStatus()"
+            (click)="alternarStatus(u)"
+          >
+            {{ u.activo ? 'Desactivar' : 'Activar' }}
+          </app-button>
+        }
+      </div>
+    </div>
+  } @else {
+    <app-usuario-form
+      [usuario]="usuarioModal()"
+      (guardado)="alGuardarFormulario($event)"
+      (cancelado)="alCancelarFormulario()"
+    ></app-usuario-form>
+  }
+</app-modal>
+
+<app-confirmation-modal
+  [open]="!!usuarioADesactivar()"
+  title="Desactivar usuario"
+  [message]="mensajeDesactivacion"
+  confirmLabel="Desactivar"
+  confirmVariant="danger"
+  [loading]="cambiandoStatus()"
+  (confirmed)="confirmarDesactivacion()"
+  (cancelled)="usuarioADesactivar.set(null)"
+></app-confirmation-modal>

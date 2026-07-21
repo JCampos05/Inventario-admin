@@ -1,0 +1,10 @@
+<div class="search-bar">
+  <app-icon name="magnifying-glass" [size]="18"></app-icon>
+  <input
+    class="search-bar__input"
+    type="search"
+    [placeholder]="placeholder"
+    [value]="value"
+    (input)="alEscribir($any($event.target).value)"
+  />
+</div>

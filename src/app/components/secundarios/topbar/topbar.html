@@ -1,0 +1,38 @@
+<header class="topbar">
+  <button class="topbar__menu" type="button" (click)="toggleSidebar.emit()" aria-label="Abrir menu">
+    <app-icon name="list" weight="bold" [size]="20"></app-icon>
+  </button>
+
+  <div class="topbar__buscador-envoltorio">
+    <div class="topbar__buscador">
+      <app-icon name="magnifying-glass" [size]="16"></app-icon>
+      <input
+        class="topbar__buscador-input"
+        type="search"
+        placeholder="Buscar productos..."
+        [value]="consulta()"
+        (input)="alEscribir($any($event.target).value)"
+        (focus)="alEnfocar()"
+        (blur)="cerrarConRetraso()"
+      />
+    </div>
+
+    @if (mostrarResultados()) {
+      <div class="topbar__resultados">
+        @if (resultados().length === 0) {
+          <p class="topbar__resultados-vacio text-body">No se encontraron productos</p>
+        } @else {
+          @for (producto of resultados(); track producto.publicId) {
+            <button type="button" class="topbar__resultado" (mousedown)="seleccionar(producto)">
+              <img class="topbar__resultado-foto" [src]="producto.fotoUrl" [alt]="producto.nombre" />
+              <span class="topbar__resultado-texto">
+                <span class="topbar__resultado-nombre text-body text-body--medium">{{ producto.nombre }}</span>
+                <span class="topbar__resultado-categoria">{{ etiquetaCategoria(producto.categoria) }}</span>
+              </span>
+            </button>
+          }
+        }
+      </div>
+    }
+  </div>
+</header>

@@ -1,0 +1,15 @@
+@if (open) {
+  <div class="modal-backdrop" (click)="alClicBackdrop()">
+    <div class="modal modal--{{ size }}" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+      <header class="modal__header">
+        <h2 class="modal__title heading heading--bold">{{ title }}</h2>
+        <button class="modal__close" type="button" (click)="closed.emit()" aria-label="Cerrar">
+          <app-icon name="x" [size]="18" weight="bold"></app-icon>
+        </button>
+      </header>
+      <div class="modal__body">
+        <ng-content></ng-content>
+      </div>
+    </div>
+  </div>
+}

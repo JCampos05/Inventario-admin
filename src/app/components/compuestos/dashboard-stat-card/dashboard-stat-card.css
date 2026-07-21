@@ -1,0 +1,67 @@
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+}
+
+.stat-card__icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--radius-lg);
+  flex-shrink: 0;
+}
+
+.stat-card__icono--coffee {
+  background-color: var(--tone-coffee-bg);
+  color: var(--tone-coffee-text);
+}
+
+.stat-card__icono--ochre {
+  background-color: var(--tone-ochre-bg);
+  color: var(--tone-ochre-text);
+}
+
+.stat-card__icono--gum {
+  background-color: var(--tone-gum-bg);
+  color: var(--tone-gum-text);
+}
+
+.stat-card__icono--basalt {
+  background-color: var(--tone-basalt-bg);
+  color: var(--tone-basalt-text);
+}
+
+.stat-card__icono--danger {
+  background-color: var(--tone-danger-bg);
+  color: var(--tone-danger-text);
+}
+
+.stat-card__icono--warning {
+  background-color: var(--tone-warning-bg);
+  color: var(--tone-warning-text);
+}
+
+.stat-card__contenido {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.stat-card__valor {
+  font-size: 1.7rem;
+  color: var(--color-forest);
+  line-height: 1.1;
+}
+
+.stat-card__etiqueta {
+  color: var(--color-stone);
+  font-size: 0.82rem;
+}

@@ -1,0 +1,51 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-family-base);
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+.badge::before {
+  content: '';
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background-color: currentColor;
+  flex-shrink: 0;
+}
+
+.badge--coffee {
+  background-color: var(--tone-coffee-bg);
+  color: var(--tone-coffee-text);
+}
+
+.badge--ochre {
+  background-color: var(--tone-ochre-bg);
+  color: var(--tone-ochre-text);
+}
+
+.badge--gum {
+  background-color: var(--tone-gum-bg);
+  color: var(--tone-gum-text);
+}
+
+.badge--basalt {
+  background-color: var(--tone-basalt-bg);
+  color: var(--tone-basalt-text);
+}
+
+.badge--danger {
+  background-color: var(--tone-danger-bg);
+  color: var(--tone-danger-text);
+}
+
+.badge--warning {
+  background-color: var(--tone-warning-bg);
+  color: var(--tone-warning-text);
+}

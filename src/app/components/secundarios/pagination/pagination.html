@@ -1,0 +1,25 @@
+@if (totalPaginas > 1) {
+  <div class="pagination">
+    <button
+      class="pagination__btn"
+      type="button"
+      [disabled]="paginaActual === 1"
+      (click)="ir(paginaActual - 1)"
+      aria-label="Pagina anterior"
+    >
+      <app-icon name="caret-left" [size]="16"></app-icon>
+    </button>
+    <span class="pagination__info text-body text-body--medium">
+      Pagina {{ paginaActual }} de {{ totalPaginas }}
+    </span>
+    <button
+      class="pagination__btn"
+      type="button"
+      [disabled]="paginaActual === totalPaginas"
+      (click)="ir(paginaActual + 1)"
+      aria-label="Pagina siguiente"
+    >
+      <app-icon name="caret-right" [size]="16"></app-icon>
+    </button>
+  </div>
+}

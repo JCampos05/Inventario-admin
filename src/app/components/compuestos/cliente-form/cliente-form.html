@@ -1,0 +1,21 @@
+<form class="cliente-form" [formGroup]="formulario" (ngSubmit)="enviar()">
+  <section class="cliente-form__seccion">
+    <span class="eyebrow">Informacion general</span>
+
+    <app-input label="Nombre" formControlName="nombre" [required]="true" [error]="errores()['nombre']"></app-input>
+
+    <div class="cliente-form__fila">
+      <app-input label="Telefono" formControlName="telefono" [error]="errores()['telefono']"></app-input>
+      <app-input label="Email" type="email" formControlName="email" [error]="errores()['email']"></app-input>
+    </div>
+
+    <app-input label="Direccion" formControlName="direccion" [error]="errores()['direccion']"></app-input>
+  </section>
+
+  <div class="cliente-form__acciones">
+    <app-button variant="outline" type="button" (click)="cancelado.emit()">Cancelar</app-button>
+    <app-button type="submit" [loading]="guardando()">
+      {{ cliente ? 'Guardar cambios' : 'Crear cliente' }}
+    </app-button>
+  </div>
+</form>

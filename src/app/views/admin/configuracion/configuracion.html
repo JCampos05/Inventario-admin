@@ -1,0 +1,98 @@
+<div class="configuracion__encabezado">
+  <span class="eyebrow">Panel</span>
+  <h1 class="configuracion__titulo heading--display">Configuracion general</h1>
+  <p class="text-body">Datos del negocio y comportamiento del sistema</p>
+</div>
+
+@if (cargando()) {
+  <div class="configuracion__cargando">
+    <app-spinner></app-spinner>
+  </div>
+} @else {
+  <div class="configuracion__grid">
+    <form class="configuracion__card" [formGroup]="formulario" (ngSubmit)="guardar()">
+      <section class="configuracion__seccion">
+        <span class="eyebrow">Negocio</span>
+
+        <div class="configuracion__fila">
+          <app-input label="Nombre del negocio" formControlName="nombreNegocio" [required]="true"></app-input>
+          <app-input label="WhatsApp del administrador" formControlName="whatsappAdmin" [required]="true"></app-input>
+        </div>
+
+        <div class="configuracion__fila">
+          <app-input label="Horario de atencion" formControlName="horarioAtencion" placeholder="Lun-Vie 9:00-18:00"></app-input>
+          <app-input label="URL del logotipo" formControlName="logoUrl" placeholder="https://..."></app-input>
+        </div>
+      </section>
+
+      <section class="configuracion__seccion">
+        <span class="eyebrow">Operacion</span>
+
+        <div class="configuracion__fila">
+          <app-select
+            label="Moneda"
+            formControlName="moneda"
+            [required]="true"
+            [opciones]="opcionesMoneda"
+          ></app-select>
+          <app-input
+            label="Dias de retencion de eliminados"
+            type="number"
+            formControlName="diasRetencionEliminados"
+            [required]="true"
+          ></app-input>
+        </div>
+      </section>
+
+      <div class="configuracion__acciones">
+        <app-button type="submit" [loading]="guardando()">Guardar cambios</app-button>
+      </div>
+    </form>
+
+    <div class="configuracion__card configuracion__card--apariencia">
+      <section class="configuracion__seccion">
+        <span class="eyebrow">Accesibilidad</span>
+        <p class="text-body">
+          Ajusta el tamano del texto en todo el sistema. Cada nivel (titulos, textos, etiquetas) crece de forma
+          proporcional a su propia jerarquia.
+        </p>
+
+        <div class="configuracion__escalas">
+          @for (opcion of escalasTexto; track opcion.value) {
+            <button
+              type="button"
+              class="configuracion__escala"
+              [class.configuracion__escala--activa]="textScaleService.escala() === opcion.value"
+              (click)="cambiarEscalaTexto(opcion.value)"
+            >
+              <span class="configuracion__escala-preview configuracion__escala-preview--{{ opcion.value }}">Aa</span>
+              <span class="configuracion__escala-label">{{ opcion.label }}</span>
+            </button>
+          }
+        </div>
+      </section>
+    </div>
+  </div>
+}
+
+<div class="configuracion__logs">
+  <div class="configuracion__logs-encabezado">
+    <span class="eyebrow">Automatizacion</span>
+    <h2 class="configuracion__logs-titulo heading heading--bold">Historial de limpieza automatica</h2>
+  </div>
+
+  <app-data-table
+    [columnas]="columnasLogs"
+    [filas]="logs()"
+    [cargando]="cargandoLogs()"
+    tituloVacio="Sin ejecuciones registradas"
+    descripcionVacio="Aqui apareceran los procesos automaticos del sistema."
+  >
+    <ng-template #principal let-log>
+      <div class="configuracion__log-job">
+        <span class="text-body text-body--medium">{{ log.nombreJob }}</span>
+        <app-badge [tone]="tonoEstado(log.estado)">{{ log.estado }}</app-badge>
+      </div>
+    </ng-template>
+  </app-data-table>
+</div>

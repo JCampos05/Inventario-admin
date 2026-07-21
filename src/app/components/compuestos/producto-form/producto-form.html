@@ -1,0 +1,94 @@
+<form class="producto-form" [formGroup]="formulario" (ngSubmit)="enviar()">
+  <div class="producto-form__columna-foto">
+    <label class="producto-form__dropzone" [class.producto-form__dropzone--llena]="fotoUrl()">
+      <input type="file" accept="image/jpeg,image/png,image/webp" (change)="alSeleccionarFoto($event)" hidden />
+
+      @if (subiendoFoto()) {
+        <div class="producto-form__dropzone-carga">
+          <app-spinner></app-spinner>
+        </div>
+      } @else if (fotoUrl()) {
+        <img class="producto-form__preview" [src]="fotoUrl()" alt="Foto del producto" />
+        <span class="producto-form__cambiar">
+          <app-icon name="camera" weight="fill" [size]="16"></app-icon>
+          Cambiar foto
+        </span>
+      } @else {
+        <div class="producto-form__dropzone-vacia">
+          <app-icon name="image" [size]="28"></app-icon>
+          <span class="producto-form__dropzone-texto">Subir foto</span>
+          <span class="producto-form__dropzone-hint">JPG, PNG o WEBP &middot; max. 5MB</span>
+        </div>
+      }
+    </label>
+
+    @if (errorFoto()) {
+      <span class="producto-form__error-foto">{{ errorFoto() }}</span>
+    }
+  </div>
+
+  <div class="producto-form__columna-campos">
+    <section class="producto-form__seccion">
+      <span class="eyebrow">Informacion general</span>
+
+      <app-input label="Nombre" formControlName="nombre" [required]="true" [error]="errores()['nombre']"></app-input>
+
+      <app-textarea
+        label="Descripcion"
+        formControlName="descripcion"
+        [required]="true"
+        [error]="errores()['descripcion']"
+      ></app-textarea>
+    </section>
+
+    <section class="producto-form__seccion">
+      <span class="eyebrow">Clasificacion</span>
+
+      <div class="producto-form__fila">
+        <app-select
+          label="Categoria"
+          formControlName="categoria"
+          [required]="true"
+          [opciones]="categorias"
+          [error]="errores()['categoria']"
+        ></app-select>
+
+        <app-select
+          label="Dimension"
+          formControlName="dimensionPublicId"
+          [required]="true"
+          [opciones]="opcionesDimension()"
+          [error]="errores()['dimensionPublicId']"
+        ></app-select>
+      </div>
+    </section>
+
+    <section class="producto-form__seccion">
+      <span class="eyebrow">Precio</span>
+
+      <div class="producto-form__fila">
+        <app-input
+          label="Precio"
+          type="number"
+          formControlName="precio"
+          [required]="true"
+          [error]="errores()['precio']"
+        ></app-input>
+
+        <app-input
+          label="Descuento"
+          type="number"
+          formControlName="descuento"
+          [error]="errores()['descuento']"
+        ></app-input>
+      </div>
+    </section>
+
+    <div class="producto-form__acciones">
+      <app-button variant="outline" type="button" (click)="cancelado.emit()">Cancelar</app-button>
+      <app-button type="submit" [loading]="guardando()">
+        {{ producto ? 'Guardar cambios' : 'Crear producto' }}
+      </app-button>
+    </div>
+  </div>
+</form>

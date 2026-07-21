@@ -1,0 +1,39 @@
+<form class="usuario-form" [formGroup]="formulario" (ngSubmit)="enviar()">
+  <section class="usuario-form__seccion">
+    <span class="eyebrow">Informacion general</span>
+
+    <app-input label="Nombre" formControlName="nombre" [required]="true" [error]="errores()['nombre']"></app-input>
+
+    <div class="usuario-form__fila">
+      <app-input
+        label="Telefono"
+        formControlName="telefono"
+        [required]="true"
+        [error]="errores()['telefono']"
+      ></app-input>
+
+      <app-select
+        label="Rol"
+        formControlName="rol"
+        [required]="true"
+        [opciones]="opcionesRol"
+        [error]="errores()['rol']"
+      ></app-select>
+    </div>
+
+    <app-input
+      label="Password"
+      type="password"
+      formControlName="password"
+      [placeholder]="usuario ? 'Dejar en blanco para no cambiar' : ''"
+      [error]="errores()['password']"
+    ></app-input>
+  </section>
+
+  <div class="usuario-form__acciones">
+    <app-button variant="outline" type="button" (click)="cancelado.emit()">Cancelar</app-button>
+    <app-button type="submit" [loading]="guardando()">
+      {{ usuario ? 'Guardar cambios' : 'Crear usuario' }}
+    </app-button>
+  </div>
+</form>

@@ -1,0 +1,80 @@
+<form class="dimension-form" [formGroup]="formulario" (ngSubmit)="enviar()">
+  <div class="dimension-form__columna-foto">
+    <label class="dimension-form__dropzone" [class.dimension-form__dropzone--llena]="fotoUrl()">
+      <input type="file" accept="image/jpeg,image/png,image/webp" (change)="alSeleccionarFoto($event)" hidden />
+
+      @if (subiendoFoto()) {
+        <div class="dimension-form__dropzone-carga">
+          <app-spinner></app-spinner>
+        </div>
+      } @else if (fotoUrl()) {
+        <img class="dimension-form__preview" [src]="fotoUrl()" alt="Foto de la dimension" />
+        <span class="dimension-form__cambiar">
+          <app-icon name="camera" weight="fill" [size]="16"></app-icon>
+          Cambiar foto
+        </span>
+      } @else {
+        <div class="dimension-form__dropzone-vacia">
+          <app-icon name="image" [size]="28"></app-icon>
+          <span class="dimension-form__dropzone-texto">Subir foto</span>
+          <span class="dimension-form__dropzone-hint">JPG, PNG o WEBP &middot; max. 5MB</span>
+        </div>
+      }
+    </label>
+
+    @if (errorFoto()) {
+      <span class="dimension-form__error-foto">{{ errorFoto() }}</span>
+    }
+  </div>
+
+  <div class="dimension-form__columna-campos">
+    <section class="dimension-form__seccion">
+      <span class="eyebrow">Informacion general</span>
+
+      <app-input label="Nombre" formControlName="nombre" [required]="true" [error]="errores()['nombre']"></app-input>
+
+      <app-input
+        label="Uso comun"
+        formControlName="usoComun"
+        [error]="errores()['usoComun']"
+      ></app-input>
+    </section>
+
+    <section class="dimension-form__seccion">
+      <span class="eyebrow">Medidas (cm)</span>
+
+      <div class="dimension-form__fila">
+        <app-input
+          label="Alto"
+          type="number"
+          formControlName="alto"
+          [required]="true"
+          [error]="errores()['alto']"
+        ></app-input>
+
+        <app-input
+          label="Ancho"
+          type="number"
+          formControlName="ancho"
+          [required]="true"
+          [error]="errores()['ancho']"
+        ></app-input>
+
+        <app-input
+          label="Profundidad"
+          type="number"
+          formControlName="profundidad"
+          [required]="true"
+          [error]="errores()['profundidad']"
+        ></app-input>
+      </div>
+    </section>
+
+    <div class="dimension-form__acciones">
+      <app-button variant="outline" type="button" (click)="cancelado.emit()">Cancelar</app-button>
+      <app-button type="submit" [loading]="guardando()">
+        {{ dimension ? 'Guardar cambios' : 'Crear dimension' }}
+      </app-button>
+    </div>
+  </div>
+</form>

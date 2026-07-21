@@ -1,0 +1,51 @@
+<div class="ventas-list__encabezado">
+  <div>
+    <span class="eyebrow">Cuentas por cobrar</span>
+    <h1 class="ventas-list__titulo heading--display">Ventas</h1>
+    <p class="text-body">Consulta el saldo y estado de cuenta de cada cliente</p>
+  </div>
+</div>
+
+<div class="ventas-list__filtros">
+  <app-search-bar
+    placeholder="Buscar por cliente"
+    [value]="busqueda()"
+    (valueChange)="busqueda.set($event)"
+  ></app-search-bar>
+</div>
+
+<app-data-table
+  [columnas]="columnas"
+  [filas]="filtrados()"
+  [cargando]="cargando()"
+  tituloVacio="No hay clientes"
+  descripcionVacio="Da de alta clientes en el apartado de Clientes para ver su cuenta aqui."
+>
+  <ng-template #acciones let-resumen>
+    <div class="ventas-list__acciones">
+      <button
+        class="ventas-list__accion-btn"
+        type="button"
+        (click)="abrirVerCuenta(resumen)"
+        aria-label="Ver cuenta del cliente"
+      >
+        <app-icon name="wallet" [size]="20"></app-icon>
+      </button>
+      <button
+        class="ventas-list__accion-btn"
+        type="button"
+        [disabled]="exportandoPublicId() === resumen.cliente.publicId"
+        (click)="exportarPdf(resumen)"
+        aria-label="Exportar estado de cuenta en PDF"
+      >
+        <app-icon name="file-pdf" [size]="20"></app-icon>
+      </button>
+    </div>
+  </ng-template>
+</app-data-table>
+
+<app-modal [open]="modalAbierto()" [title]="tituloModal()" size="lg" (closed)="cerrarModal()">
+  @if (clientePublicIdModal(); as clientePublicId) {
+    <app-cuenta-cliente [clientePublicId]="clientePublicId"></app-cuenta-cliente>
+  }
+</app-modal>

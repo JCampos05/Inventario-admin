@@ -1,0 +1,43 @@
+.heading {
+  font-family: var(--font-family-base);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-forest);
+}
+
+.heading--bold {
+  font-weight: 700;
+}
+
+.heading--display {
+  font-family: var(--font-family-base);
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  color: var(--color-forest);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-family: var(--font-family-base);
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-coffee);
+}
+
+.text-body {
+  font-family: var(--font-family-base);
+  font-weight: 400;
+  font-size: 1rem;
+  color: var(--color-moss);
+}
+
+.text-body--medium {
+  font-weight: 500;
+}

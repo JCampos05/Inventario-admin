@@ -1,0 +1,106 @@
+<div class="clientes-list__encabezado">
+  <div>
+    <span class="eyebrow">Cuentas</span>
+    <h1 class="clientes-list__titulo heading--display">Clientes</h1>
+    <p class="text-body">Gestiona clientes y su estado de cuenta</p>
+  </div>
+  <app-button (click)="abrirCrear()">
+    <span class="clientes-list__nuevo">
+      <app-icon name="plus" weight="bold" [size]="16"></app-icon>
+      Nuevo cliente
+    </span>
+  </app-button>
+</div>
+
+<div class="clientes-list__filtros">
+  <app-search-bar
+    placeholder="Buscar por nombre, telefono o email"
+    [value]="busqueda()"
+    (valueChange)="busqueda.set($event)"
+  ></app-search-bar>
+</div>
+
+<app-data-table
+  [columnas]="columnas"
+  [filas]="filtrados()"
+  [cargando]="cargando()"
+  tituloVacio="No hay clientes"
+  descripcionVacio="Crea un cliente nuevo o ajusta la busqueda."
+>
+  <ng-template #acciones let-cliente>
+    <div class="clientes-list__acciones">
+      <button class="clientes-list__accion-btn" type="button" (click)="abrirVer(cliente)" aria-label="Ver cliente">
+        <app-icon name="eye" [size]="20"></app-icon>
+      </button>
+      <button class="clientes-list__accion-btn" type="button" (click)="abrirEditar(cliente)" aria-label="Editar cliente">
+        <app-icon name="pencil-simple" [size]="20"></app-icon>
+      </button>
+      <button class="clientes-list__accion-btn" type="button" (click)="abrirCuenta(cliente)" aria-label="Editar cuenta">
+        <app-icon name="wallet" [size]="20"></app-icon>
+      </button>
+      <button
+        class="clientes-list__accion-btn clientes-list__accion-btn--peligro"
+        type="button"
+        (click)="eliminar(cliente)"
+        aria-label="Eliminar cliente"
+      >
+        <app-icon name="trash" [size]="20"></app-icon>
+      </button>
+    </div>
+  </ng-template>
+</app-data-table>
+
+<app-modal [open]="modalAbierto()" [title]="tituloModal()" size="lg" (closed)="cerrarModal()">
+  @if (cargandoModal()) {
+    <div class="clientes-list__modal-cargando">
+      <app-spinner></app-spinner>
+    </div>
+  } @else if (modoModal() === 'ver' && clienteModal(); as c) {
+    <div class="clientes-list__ver">
+      <div class="clientes-list__ver-datos">
+        @if (c.telefono) {
+          <div>
+            <span class="clientes-list__ver-label">Telefono</span>
+            <p class="text-body text-body--medium">{{ c.telefono }}</p>
+          </div>
+        }
+        @if (c.email) {
+          <div>
+            <span class="clientes-list__ver-label">Email</span>
+            <p class="text-body text-body--medium">{{ c.email }}</p>
+          </div>
+        }
+        @if (c.direccion) {
+          <div>
+            <span class="clientes-list__ver-label">Direccion</span>
+            <p class="text-body text-body--medium">{{ c.direccion }}</p>
+          </div>
+        }
+      </div>
+
+      <div class="clientes-list__ver-acciones">
+        <app-button variant="outline" [fullWidth]="true" (click)="pasarAEditar()">Editar cliente</app-button>
+        <app-button [fullWidth]="true" (click)="abrirCuenta(c)">Editar cuenta</app-button>
+      </div>
+    </div>
+  } @else if (modoModal() === 'cuenta' && clienteModal(); as c) {
+    <app-cuenta-cliente [clientePublicId]="c.publicId"></app-cuenta-cliente>
+  } @else {
+    <app-cliente-form
+      [cliente]="clienteModal()"
+      (guardado)="alGuardarFormulario($event)"
+      (cancelado)="alCancelarFormulario()"
+    ></app-cliente-form>
+  }
+</app-modal>
+
+<app-confirmation-modal
+  [open]="!!clienteAEliminar()"
+  title="Eliminar cliente"
+  [message]="mensajeEliminacion"
+  confirmLabel="Eliminar"
+  confirmVariant="danger"
+  [loading]="eliminando()"
+  (confirmed)="confirmarEliminacion()"
+  (cancelled)="clienteAEliminar.set(null)"
+></app-confirmation-modal>

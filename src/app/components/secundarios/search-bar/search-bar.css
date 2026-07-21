@@ -1,0 +1,25 @@
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 0.65rem 0.95rem;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-surface-muted);
+  color: var(--color-stone);
+  max-width: 24rem;
+  flex: 1;
+}
+
+.search-bar__input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-family: var(--font-family-base);
+  font-size: 0.9rem;
+  color: var(--color-forest);
+  background: transparent;
+}
+
+.search-bar__input::-webkit-search-cancel-button {
+  cursor: pointer;
+}

@@ -1,0 +1,24 @@
+<div class="field">
+  @if (label) {
+    <label class="field__label" [for]="textareaId">
+      {{ label }}
+      @if (required) {
+        <span class="field__required" aria-hidden="true">*</span>
+      }
+    </label>
+  }
+  <textarea
+    class="field__control"
+    [class.field__control--error]="error"
+    [id]="textareaId"
+    [rows]="rows"
+    [placeholder]="placeholder"
+    [disabled]="disabled"
+    [value]="value"
+    (input)="alCambiar($any($event.target).value)"
+    (blur)="alTocar()"
+  ></textarea>
+  @if (error) {
+    <span class="field__message field__message--error">{{ error }}</span>
+  }
+</div>

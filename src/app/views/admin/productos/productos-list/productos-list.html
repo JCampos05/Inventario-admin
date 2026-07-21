@@ -1,0 +1,149 @@
+<div class="productos-list__encabezado">
+  <div>
+    <span class="eyebrow">Inventario</span>
+    <h1 class="productos-list__titulo heading--display">Productos</h1>
+    <p class="text-body">Gestiona bolsas, accesorios y joyeria</p>
+  </div>
+  <app-button (click)="abrirCrear()">
+    <span class="productos-list__nuevo">
+      <app-icon name="plus" weight="bold" [size]="16"></app-icon>
+      Nuevo producto
+    </span>
+  </app-button>
+</div>
+
+<div class="productos-list__filtros">
+  <app-search-bar
+    placeholder="Buscar por nombre"
+    [value]="busqueda()"
+    (valueChange)="busqueda.set($event)"
+  ></app-search-bar>
+
+  <app-select
+    placeholder="Todas las categorias"
+    [opciones]="opcionesCategoria"
+    [ngModel]="categoriaFiltro()"
+    (ngModelChange)="categoriaFiltro.set($any($event))"
+  ></app-select>
+
+  <app-select
+    placeholder="Todos los status"
+    [opciones]="opcionesStatus"
+    [ngModel]="statusFiltro()"
+    (ngModelChange)="statusFiltro.set($any($event))"
+  ></app-select>
+</div>
+
+<app-data-table
+  [columnas]="columnas"
+  [filas]="filtrados()"
+  [cargando]="cargando()"
+  tituloVacio="No hay productos"
+  descripcionVacio="Crea un producto nuevo o ajusta los filtros."
+>
+  <ng-template #principal let-producto>
+    <div class="productos-list__producto">
+      <img class="productos-list__foto" [src]="producto.fotoUrl" [alt]="producto.nombre" />
+      <div class="productos-list__producto-texto">
+        <span class="productos-list__producto-nombre text-body text-body--medium">{{ producto.nombre }}</span>
+        <span class="productos-list__producto-categoria">{{ etiquetaCategoria(producto.categoria) }}</span>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #acciones let-producto>
+    <div class="productos-list__acciones">
+      <div class="productos-list__acciones-estado">
+        <app-status-tag [status]="producto.status"></app-status-tag>
+        <select
+          class="productos-list__select-status"
+          [value]="producto.status"
+          (change)="alCambiarStatus(producto, $any($event.target).value)"
+          aria-label="Cambiar status"
+        >
+          @for (opcion of opcionesStatus; track opcion.value) {
+            <option [value]="opcion.value">{{ opcion.label }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="productos-list__acciones-botones">
+        <button class="productos-list__accion-btn" type="button" (click)="abrirVer(producto)" aria-label="Ver producto">
+          <app-icon name="eye" [size]="20"></app-icon>
+        </button>
+        <button class="productos-list__accion-btn" type="button" (click)="abrirEditar(producto)" aria-label="Editar producto">
+          <app-icon name="pencil-simple" [size]="20"></app-icon>
+        </button>
+        <button
+          class="productos-list__accion-btn productos-list__accion-btn--peligro"
+          type="button"
+          [disabled]="producto.status === 'ELIMINADO'"
+          (click)="eliminar(producto)"
+          aria-label="Eliminar producto"
+        >
+          <app-icon name="trash" [size]="20"></app-icon>
+        </button>
+      </div>
+    </div>
+  </ng-template>
+</app-data-table>
+
+<app-modal [open]="modalAbierto()" [title]="tituloModal()" size="lg" (closed)="cerrarModal()">
+  @if (cargandoModal()) {
+    <div class="productos-list__modal-cargando">
+      <app-spinner></app-spinner>
+    </div>
+  } @else if (modoModal() === 'ver' && productoModal(); as p) {
+    <div class="productos-list__ver">
+      <img class="productos-list__ver-foto" [src]="p.fotoUrl" [alt]="p.nombre" />
+
+      <div class="productos-list__ver-fila">
+        <span class="eyebrow">{{ etiquetaCategoria(p.categoria) }}</span>
+        <app-status-tag [status]="p.status"></app-status-tag>
+      </div>
+
+      <p class="text-body">{{ p.descripcion }}</p>
+
+      <div class="productos-list__ver-precios">
+        <div>
+          <span class="productos-list__ver-label">Precio</span>
+          <span class="productos-list__ver-valor">${{ numero(p.precio).toFixed(2) }}</span>
+        </div>
+        @if (p.descuento > 0) {
+          <div>
+            <span class="productos-list__ver-label">Descuento</span>
+            <span class="productos-list__ver-valor">${{ numero(p.descuento).toFixed(2) }}</span>
+          </div>
+        }
+      </div>
+
+      <div class="productos-list__ver-dimension">
+        <span class="productos-list__ver-label">Dimension</span>
+        <p class="text-body text-body--medium">
+          {{ p.dimension.nombre }} &middot; {{ p.dimension.alto }}x{{ p.dimension.ancho }}x{{ p.dimension.profundidad }} cm
+        </p>
+      </div>
+
+      <div class="productos-list__ver-acciones">
+        <app-button variant="outline" [fullWidth]="true" (click)="pasarAEditar()">Editar producto</app-button>
+      </div>
+    </div>
+  } @else {
+    <app-producto-form
+      [producto]="productoModal()"
+      (guardado)="alGuardarFormulario($event)"
+      (cancelado)="alCancelarFormulario()"
+    ></app-producto-form>
+  }
+</app-modal>
+
+<app-confirmation-modal
+  [open]="!!productoAEliminar()"
+  title="Eliminar producto"
+  [message]="mensajeEliminacion"
+  confirmLabel="Eliminar"
+  confirmVariant="danger"
+  [loading]="cambiandoStatus()"
+  (confirmed)="confirmarEliminacion()"
+  (cancelled)="productoAEliminar.set(null)"
+></app-confirmation-modal>

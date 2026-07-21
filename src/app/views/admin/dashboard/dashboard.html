@@ -1,0 +1,32 @@
+<div class="dashboard__encabezado">
+  <span class="eyebrow">Panel</span>
+  <h1 class="dashboard__titulo heading--display">Hola, {{ nombreUsuario }}</h1>
+  <p class="text-body dashboard__subtitulo">Este es el resumen general de tu inventario</p>
+</div>
+
+<div class="dashboard__grid">
+  <app-dashboard-stat-card
+    icono="handbag"
+    tono="basalt"
+    etiqueta="Productos activos"
+    [valor]="totalProductos()"
+  ></app-dashboard-stat-card>
+  <app-dashboard-stat-card
+    icono="check-circle"
+    tono="gum"
+    etiqueta="En existencia"
+    [valor]="totalExistencia()"
+  ></app-dashboard-stat-card>
+  <app-dashboard-stat-card
+    icono="bookmark-simple"
+    tono="ochre"
+    etiqueta="Apartados"
+    [valor]="totalApartado()"
+  ></app-dashboard-stat-card>
+  <app-dashboard-stat-card
+    icono="x-circle"
+    tono="danger"
+    etiqueta="Agotados"
+    [valor]="totalAgotado()"
+  ></app-dashboard-stat-card>
+</div>

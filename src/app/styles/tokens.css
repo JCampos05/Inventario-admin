@@ -1,0 +1,61 @@
+:root {
+  --color-sand: #E1D9C9;
+  --color-stone: #AE9372;
+  --color-coffee: #B27D57;
+  --color-ochre: #7F4B30;
+  --color-gum: #7D8769;
+  --color-moss: #424C21;
+  --color-forest: #173125;
+  --color-basalt: #212E40;
+
+  --color-danger: #A63A32;
+  --color-warning: #B98A2E;
+
+  /* Superficies "flotantes" (fondo de pagina vs. tarjetas) */
+  --color-page-bg: #0F231A;
+  --color-surface: #FFFFFF;
+  --color-surface-muted: #F7F4EE;
+
+  /* Pares tinte suave / texto para pills y badges (no solidos) */
+  --tone-coffee-bg: #F3E4D6;
+  --tone-coffee-text: #8A5A34;
+  --tone-ochre-bg: #EFDCCF;
+  --tone-ochre-text: #7F4B30;
+  --tone-gum-bg: #E4E8DC;
+  --tone-gum-text: #55613F;
+  --tone-basalt-bg: #DEE3EA;
+  --tone-basalt-text: #212E40;
+  --tone-danger-bg: #F4DEDB;
+  --tone-danger-text: #A63A32;
+  --tone-warning-bg: #F3E7CE;
+  --tone-warning-text: #8A6A22;
+
+  --font-family-base: 'Poppins', sans-serif;
+
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.75rem;
+  --radius-2xl: 2.25rem;
+  --radius-pill: 999px;
+
+  --shadow-soft: 0 12px 30px rgba(23, 49, 37, 0.12);
+  --shadow-lift: 0 20px 45px rgba(23, 49, 37, 0.18);
+  --shadow-card: 0 1px 2px rgba(23, 49, 37, 0.04), 0 8px 24px rgba(23, 49, 37, 0.06);
+
+  --content-max-width: 90rem;
+
+  --sidebar-width: 16rem;
+  --sidebar-width-collapsed: 4.5rem;
+  --topbar-height: 4.5rem;
+
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 64rem;
+}

@@ -1,0 +1,110 @@
+<div class="dimensiones-list__encabezado">
+  <div>
+    <span class="eyebrow">Catalogo</span>
+    <h1 class="dimensiones-list__titulo heading--display">Dimensiones</h1>
+    <p class="text-body">Catalogo de tamanos que heredan bolsas, accesorios y joyeria</p>
+  </div>
+  <app-button (click)="abrirCrear()">
+    <span class="dimensiones-list__nuevo">
+      <app-icon name="plus" weight="bold" [size]="16"></app-icon>
+      Nueva dimension
+    </span>
+  </app-button>
+</div>
+
+<div class="dimensiones-list__filtros">
+  <app-search-bar
+    placeholder="Buscar por nombre o uso comun"
+    [value]="busqueda()"
+    (valueChange)="busqueda.set($event)"
+  ></app-search-bar>
+</div>
+
+<app-data-table
+  [columnas]="columnas"
+  [filas]="filtradas()"
+  [cargando]="cargando()"
+  tituloVacio="No hay dimensiones"
+  descripcionVacio="Crea una dimension nueva o ajusta la busqueda."
+>
+  <ng-template #principal let-dimension>
+    <div class="dimensiones-list__dimension">
+      <img class="dimensiones-list__foto" [src]="dimension.fotoUrl" [alt]="dimension.nombre" />
+      <span class="text-body text-body--medium">{{ dimension.nombre }}</span>
+    </div>
+  </ng-template>
+
+  <ng-template #acciones let-dimension>
+    <div class="dimensiones-list__acciones">
+      <button class="dimensiones-list__accion-btn" type="button" (click)="abrirVer(dimension)" aria-label="Ver dimension">
+        <app-icon name="eye" [size]="20"></app-icon>
+      </button>
+      <button class="dimensiones-list__accion-btn" type="button" (click)="abrirEditar(dimension)" aria-label="Editar dimension">
+        <app-icon name="pencil-simple" [size]="20"></app-icon>
+      </button>
+      <button
+        class="dimensiones-list__accion-btn dimensiones-list__accion-btn--peligro"
+        type="button"
+        (click)="eliminar(dimension)"
+        aria-label="Eliminar dimension"
+      >
+        <app-icon name="trash" [size]="20"></app-icon>
+      </button>
+    </div>
+  </ng-template>
+</app-data-table>
+
+<app-modal [open]="modalAbierto()" [title]="tituloModal()" size="lg" (closed)="cerrarModal()">
+  @if (cargandoModal()) {
+    <div class="dimensiones-list__modal-cargando">
+      <app-spinner></app-spinner>
+    </div>
+  } @else if (modoModal() === 'ver' && dimensionModal(); as d) {
+    <div class="dimensiones-list__ver">
+      <img class="dimensiones-list__ver-foto" [src]="d.fotoUrl" [alt]="d.nombre" />
+
+      <div class="dimensiones-list__ver-medidas">
+        <div>
+          <span class="dimensiones-list__ver-label">Alto</span>
+          <span class="dimensiones-list__ver-valor">{{ d.alto }} cm</span>
+        </div>
+        <div>
+          <span class="dimensiones-list__ver-label">Ancho</span>
+          <span class="dimensiones-list__ver-valor">{{ d.ancho }} cm</span>
+        </div>
+        <div>
+          <span class="dimensiones-list__ver-label">Profundidad</span>
+          <span class="dimensiones-list__ver-valor">{{ d.profundidad }} cm</span>
+        </div>
+      </div>
+
+      @if (d.usoComun) {
+        <div class="dimensiones-list__ver-uso">
+          <span class="dimensiones-list__ver-label">Uso comun</span>
+          <p class="text-body">{{ d.usoComun }}</p>
+        </div>
+      }
+
+      <div class="dimensiones-list__ver-acciones">
+        <app-button variant="outline" [fullWidth]="true" (click)="pasarAEditar()">Editar dimension</app-button>
+      </div>
+    </div>
+  } @else {
+    <app-dimension-form
+      [dimension]="dimensionModal()"
+      (guardado)="alGuardarFormulario($event)"
+      (cancelado)="alCancelarFormulario()"
+    ></app-dimension-form>
+  }
+</app-modal>
+
+<app-confirmation-modal
+  [open]="!!dimensionAEliminar()"
+  title="Eliminar dimension"
+  [message]="mensajeEliminacion"
+  confirmLabel="Eliminar"
+  confirmVariant="danger"
+  [loading]="eliminando()"
+  (confirmed)="confirmarEliminacion()"
+  (cancelled)="dimensionAEliminar.set(null)"
+></app-confirmation-modal>

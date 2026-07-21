@@ -1,0 +1,20 @@
+.dashboard__encabezado {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: var(--space-xl);
+}
+
+.dashboard__titulo {
+  font-size: 1.75rem;
+}
+
+.dashboard__subtitulo {
+  color: var(--color-moss);
+}
+
+.dashboard__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: var(--space-md);
+}

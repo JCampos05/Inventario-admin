@@ -1,0 +1,27 @@
+<div class="field">
+  @if (label) {
+    <label class="field__label" [for]="selectId">
+      {{ label }}
+      @if (required) {
+        <span class="field__required" aria-hidden="true">*</span>
+      }
+    </label>
+  }
+  <select
+    class="field__control"
+    [class.field__control--error]="error"
+    [id]="selectId"
+    [disabled]="disabled"
+    [value]="value"
+    (change)="alCambiar($any($event.target).value)"
+    (blur)="alTocar()"
+  >
+    <option value="" [disabled]="required">{{ placeholder }}</option>
+    @for (opcion of opciones; track opcion.value) {
+      <option [value]="opcion.value">{{ opcion.label }}</option>
+    }
+  </select>
+  @if (error) {
+    <span class="field__message field__message--error">{{ error }}</span>
+  }
+</div>

@@ -1,0 +1,38 @@
+<aside class="sidebar" [class.sidebar--open]="open">
+  <div class="sidebar__marca">
+    <span class="sidebar__marca-icono">
+      <app-icon name="storefront" weight="fill" [size]="20"></app-icon>
+    </span>
+    <span class="sidebar__marca-texto heading heading--bold">Inventario</span>
+  </div>
+
+  <span class="sidebar__grupo eyebrow">Menu</span>
+
+  <nav class="sidebar__nav">
+    @for (item of items; track item.ruta) {
+      <a
+        class="sidebar__item"
+        [routerLink]="item.ruta"
+        routerLinkActive="sidebar__item--activo"
+        (click)="closed.emit()"
+      >
+        <span class="sidebar__item-icono">
+          <app-icon [name]="item.icono" [size]="18"></app-icon>
+        </span>
+        <span class="sidebar__item-texto">{{ item.etiqueta }}</span>
+      </a>
+    }
+  </nav>
+
+  <div class="sidebar__footer">
+    <span class="sidebar__avatar">{{ iniciales }}</span>
+    <span class="sidebar__footer-nombre text-body text-body--medium">{{ nombreUsuario }}</span>
+    <button class="sidebar__logout" type="button" (click)="logout.emit()" aria-label="Cerrar sesion">
+      <app-icon name="sign-out" [size]="18"></app-icon>
+    </button>
+  </div>
+</aside>
+
+@if (open) {
+  <div class="sidebar__backdrop" (click)="closed.emit()"></div>
+}

@@ -1,0 +1,16 @@
+<div class="toast-stack">
+  @for (mensaje of toastService.mensajes(); track mensaje.id) {
+    <div
+      class="toast toast--{{ mensaje.tono }}"
+      [class.toast--saliendo]="toastService.saliendo().has(mensaje.id)"
+    >
+      <span class="toast__icono">
+        <app-icon [name]="iconoPara(mensaje.tono)" weight="fill" [size]="16"></app-icon>
+      </span>
+      <span class="toast__texto">{{ mensaje.texto }}</span>
+      <button class="toast__cerrar" type="button" (click)="toastService.cerrar(mensaje.id)" aria-label="Cerrar">
+        <app-icon name="x" [size]="14" weight="bold"></app-icon>
+      </button>
+    </div>
+  }
+</div>

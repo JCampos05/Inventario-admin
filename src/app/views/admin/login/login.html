@@ -1,0 +1,54 @@
+<div class="login">
+  <div class="login__panel">
+    <div class="login__texto">
+      <div class="login__marca">
+        <span class="login__marca-icono">
+          <app-icon name="storefront" weight="fill" [size]="26"></app-icon>
+        </span>
+        <span class="login__marca-texto heading heading--bold">Inventario</span>
+      </div>
+
+      <div class="login__mensaje">
+        <span class="eyebrow">Panel administrativo</span>
+        <h1 class="login__titulo heading--display">Gestiona tu inventario en un solo lugar</h1>
+        <p class="text-body login__descripcion">
+          Productos, clientes, proveedores y ventas, organizados y accesibles desde cualquier dispositivo.
+        </p>
+      </div>
+    </div>
+
+    <div class="login__ilustracion-envoltorio">
+      <app-inventory-illustration class="login__ilustracion"></app-inventory-illustration>
+    </div>
+  </div>
+
+  <div class="login__formulario">
+    <form class="login__card" [formGroup]="formulario" (ngSubmit)="enviar()">
+      <div class="login__card-encabezado">
+        <h2 class="login__card-titulo heading heading--bold">Iniciar sesion</h2>
+        <p class="text-body">Ingresa tus datos para continuar</p>
+      </div>
+
+      <app-input
+        label="Telefono"
+        type="tel"
+        placeholder="10 digitos"
+        formControlName="telefono"
+        [required]="true"
+      ></app-input>
+
+      <app-input
+        label="Contrasena"
+        type="password"
+        formControlName="password"
+        [required]="true"
+      ></app-input>
+
+      @if (errorGeneral()) {
+        <p class="login__error">{{ errorGeneral() }}</p>
+      }
+
+      <app-button type="submit" [fullWidth]="true" [loading]="cargando()">Ingresar</app-button>
+    </form>
+  </div>
+</div>

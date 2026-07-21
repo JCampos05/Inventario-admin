@@ -1,0 +1,18 @@
+<div class="layout">
+  <app-sidebar
+    [open]="sidebarAbierto()"
+    [nombreUsuario]="nombreUsuario"
+    (closed)="sidebarAbierto.set(false)"
+    (logout)="cerrarSesion()"
+  ></app-sidebar>
+
+  <div class="layout__contenido">
+    <app-topbar (toggleSidebar)="sidebarAbierto.set(!sidebarAbierto())"></app-topbar>
+
+    <main class="layout__main">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>
+
+<app-noti-toast></app-noti-toast>

@@ -1,0 +1,45 @@
+@if (cargando) {
+  <div class="data-table__cargando">
+    <app-spinner></app-spinner>
+  </div>
+} @else if (filas.length === 0) {
+  <app-empty-state [titulo]="tituloVacio" [descripcion]="descripcionVacio"></app-empty-state>
+} @else {
+  <div class="data-table__scroll">
+    <table class="data-table">
+      <thead>
+        <tr>
+          @for (columna of columnas; track columna.header) {
+            <th [class.data-table__cell--right]="columna.align === 'right'">{{ columna.header }}</th>
+          }
+          @if (plantillaAcciones) {
+            <th class="data-table__cell--right">Acciones</th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (fila of filas; track fila) {
+          <tr>
+            @for (columna of columnas; track columna.header; let primero = $first) {
+              <td
+                [class.data-table__cell--right]="columna.align === 'right'"
+                [attr.data-label]="primero ? null : columna.header"
+              >
+                @if (primero && plantillaPrincipal) {
+                  <ng-container [ngTemplateOutlet]="plantillaPrincipal" [ngTemplateOutletContext]="{ $implicit: fila }"></ng-container>
+                } @else {
+                  {{ columna.accessor(fila) }}
+                }
+              </td>
+            }
+            @if (plantillaAcciones) {
+              <td class="data-table__cell--right data-table__cell--acciones" data-label="Acciones">
+                <ng-container [ngTemplateOutlet]="plantillaAcciones" [ngTemplateOutletContext]="{ $implicit: fila }"></ng-container>
+              </td>
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

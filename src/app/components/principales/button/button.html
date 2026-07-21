@@ -1,0 +1,37 @@
+<ng-template #contenido>
+  <ng-content></ng-content>
+</ng-template>
+
+@if (routerLink) {
+  <a
+    [routerLink]="routerLink"
+    class="btn btn--{{ variant }}"
+    [class.btn--full]="fullWidth"
+    [class.btn--disabled]="disabled"
+  >
+    <ng-container [ngTemplateOutlet]="contenido"></ng-container>
+  </a>
+} @else if (href) {
+  <a
+    [href]="href"
+    [target]="target"
+    rel="noopener"
+    class="btn btn--{{ variant }}"
+    [class.btn--full]="fullWidth"
+    [class.btn--disabled]="disabled"
+  >
+    <ng-container [ngTemplateOutlet]="contenido"></ng-container>
+  </a>
+} @else {
+  <button
+    [type]="type"
+    class="btn btn--{{ variant }}"
+    [class.btn--full]="fullWidth"
+    [disabled]="disabled || loading"
+  >
+    @if (loading) {
+      <span class="btn__spinner" aria-hidden="true"></span>
+    }
+    <ng-container [ngTemplateOutlet]="contenido"></ng-container>
+  </button>
+}

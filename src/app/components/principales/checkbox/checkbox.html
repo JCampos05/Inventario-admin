@@ -1,0 +1,11 @@
+<label class="checkbox" [class.checkbox--disabled]="disabled" [for]="checkboxId">
+  <input
+    class="checkbox__input"
+    type="checkbox"
+    [id]="checkboxId"
+    [checked]="value"
+    [disabled]="disabled"
+    (change)="alCambiar($any($event.target).checked)"
+  />
+  <span class="checkbox__label">{{ label }}</span>
+</label>

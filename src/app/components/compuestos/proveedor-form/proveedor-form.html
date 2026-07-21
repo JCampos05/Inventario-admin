@@ -1,0 +1,28 @@
+<form class="proveedor-form" [formGroup]="formulario" (ngSubmit)="enviar()">
+  <section class="proveedor-form__seccion">
+    <span class="eyebrow">Informacion general</span>
+
+    <app-input
+      label="Nombre de la tienda"
+      formControlName="nombreTienda"
+      [required]="true"
+      [error]="errores()['nombreTienda']"
+    ></app-input>
+
+    <div class="proveedor-form__fila">
+      <app-input label="Telefono" formControlName="telefono" [error]="errores()['telefono']"></app-input>
+      <app-input
+        label="Link (WhatsApp o Facebook)"
+        formControlName="linkWeb"
+        [error]="errores()['linkWeb']"
+      ></app-input>
+    </div>
+  </section>
+
+  <div class="proveedor-form__acciones">
+    <app-button variant="outline" type="button" (click)="cancelado.emit()">Cancelar</app-button>
+    <app-button type="submit" [loading]="guardando()">
+      {{ proveedor ? 'Guardar cambios' : 'Crear proveedor' }}
+    </app-button>
+  </div>
+</form>

@@ -1,0 +1,125 @@
+<div class="proveedores-list__encabezado">
+  <div>
+    <span class="eyebrow">Cadena de suministro</span>
+    <h1 class="proveedores-list__titulo heading--display">Proveedores</h1>
+    <p class="text-body">Gestiona las tiendas y contactos de proveedores</p>
+  </div>
+  <app-button (click)="abrirCrear()">
+    <span class="proveedores-list__nuevo">
+      <app-icon name="plus" weight="bold" [size]="16"></app-icon>
+      Nuevo proveedor
+    </span>
+  </app-button>
+</div>
+
+<div class="proveedores-list__filtros">
+  <app-search-bar
+    placeholder="Buscar por tienda o telefono"
+    [value]="busqueda()"
+    (valueChange)="busqueda.set($event)"
+  ></app-search-bar>
+</div>
+
+<app-data-table
+  [columnas]="columnas"
+  [filas]="filtrados()"
+  [cargando]="cargando()"
+  tituloVacio="No hay proveedores"
+  descripcionVacio="Crea un proveedor nuevo o ajusta la busqueda."
+>
+  <ng-template #acciones let-proveedor>
+    <div class="proveedores-list__acciones">
+      @if (linkWhatsapp(proveedor); as whatsapp) {
+        <a
+          class="proveedores-list__accion-btn proveedores-list__accion-btn--whatsapp"
+          [href]="whatsapp"
+          target="_blank"
+          rel="noopener"
+          aria-label="Contactar por WhatsApp"
+        >
+          <app-icon name="whatsapp-logo" weight="fill" [size]="20"></app-icon>
+        </a>
+      }
+      @if (proveedor.linkWeb) {
+        <a
+          class="proveedores-list__accion-btn"
+          [href]="proveedor.linkWeb"
+          target="_blank"
+          rel="noopener"
+          aria-label="Abrir link del proveedor"
+        >
+          <app-icon name="globe" [size]="20"></app-icon>
+        </a>
+      }
+      <button class="proveedores-list__accion-btn" type="button" (click)="abrirVer(proveedor)" aria-label="Ver proveedor">
+        <app-icon name="eye" [size]="20"></app-icon>
+      </button>
+      <button class="proveedores-list__accion-btn" type="button" (click)="abrirEditar(proveedor)" aria-label="Editar proveedor">
+        <app-icon name="pencil-simple" [size]="20"></app-icon>
+      </button>
+      <button
+        class="proveedores-list__accion-btn proveedores-list__accion-btn--peligro"
+        type="button"
+        (click)="eliminar(proveedor)"
+        aria-label="Eliminar proveedor"
+      >
+        <app-icon name="trash" [size]="20"></app-icon>
+      </button>
+    </div>
+  </ng-template>
+</app-data-table>
+
+<app-modal [open]="modalAbierto()" [title]="tituloModal()" (closed)="cerrarModal()">
+  @if (cargandoModal()) {
+    <div class="proveedores-list__modal-cargando">
+      <app-spinner></app-spinner>
+    </div>
+  } @else if (modoModal() === 'ver' && proveedorModal(); as p) {
+    <div class="proveedores-list__ver">
+      @if (p.telefono) {
+        <div>
+          <span class="proveedores-list__ver-label">Telefono</span>
+          <p class="text-body text-body--medium">{{ p.telefono }}</p>
+        </div>
+      }
+
+      @if (p.linkWeb) {
+        <div>
+          <span class="proveedores-list__ver-label">Link</span>
+          <p class="text-body text-body--medium">{{ p.linkWeb }}</p>
+        </div>
+      }
+
+      <div class="proveedores-list__ver-acciones">
+        @if (linkWhatsapp(p); as whatsapp) {
+          <app-button variant="outline" [fullWidth]="true" [href]="whatsapp" target="_blank">
+            Abrir WhatsApp
+          </app-button>
+        }
+        @if (p.linkWeb) {
+          <app-button variant="outline" [fullWidth]="true" [href]="p.linkWeb" target="_blank">
+            Abrir link
+          </app-button>
+        }
+        <app-button [fullWidth]="true" (click)="pasarAEditar()">Editar proveedor</app-button>
+      </div>
+    </div>
+  } @else {
+    <app-proveedor-form
+      [proveedor]="proveedorModal()"
+      (guardado)="alGuardarFormulario($event)"
+      (cancelado)="alCancelarFormulario()"
+    ></app-proveedor-form>
+  }
+</app-modal>
+
+<app-confirmation-modal
+  [open]="!!proveedorAEliminar()"
+  title="Eliminar proveedor"
+  [message]="mensajeEliminacion"
+  confirmLabel="Eliminar"
+  confirmVariant="danger"
+  [loading]="eliminando()"
+  (confirmed)="confirmarEliminacion()"
+  (cancelled)="proveedorAEliminar.set(null)"
+></app-confirmation-modal>

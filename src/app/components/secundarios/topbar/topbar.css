@@ -1,0 +1,123 @@
+.topbar {
+  height: var(--topbar-height);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: 0 var(--space-lg);
+  background-color: var(--color-surface);
+  border-bottom: 1px solid rgba(23, 49, 37, 0.06);
+  position: relative;
+  z-index: 50;
+}
+
+.topbar__menu {
+  background: none;
+  border: none;
+  color: var(--color-forest);
+  display: none;
+  align-items: center;
+  padding: var(--space-xs);
+  flex-shrink: 0;
+}
+
+.topbar__buscador-envoltorio {
+  position: relative;
+  max-width: 22rem;
+  width: 100%;
+}
+
+.topbar__buscador {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 0.55rem 0.9rem;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-surface-muted);
+  color: var(--color-moss);
+  width: 100%;
+}
+
+.topbar__buscador-input {
+  border: none;
+  outline: none;
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-family-base);
+  font-size: 0.85rem;
+  color: var(--color-forest);
+  background: transparent;
+}
+
+.topbar__resultados {
+  position: absolute;
+  top: calc(100% + var(--space-xs));
+  left: 0;
+  right: 0;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lift);
+  overflow: hidden;
+  max-height: 22rem;
+  overflow-y: auto;
+}
+
+.topbar__resultados-vacio {
+  padding: var(--space-md);
+  color: var(--color-stone);
+  font-size: 0.85rem;
+}
+
+.topbar__resultado {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.topbar__resultado:hover {
+  background-color: var(--color-surface-muted);
+}
+
+.topbar__resultado-foto {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.topbar__resultado-texto {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.topbar__resultado-nombre {
+  color: var(--color-forest);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.topbar__resultado-categoria {
+  font-size: 0.72rem;
+  color: var(--color-stone);
+}
+
+@media (max-width: 64rem) {
+  .topbar__menu {
+    display: inline-flex;
+  }
+}
+
+@media (max-width: 40rem) {
+  .topbar__buscador-envoltorio {
+    max-width: none;
+  }
+}

@@ -1,0 +1,110 @@
+:host {
+  display: block;
+}
+
+.data-table__cargando {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-xl);
+}
+
+.data-table__scroll {
+  overflow-x: auto;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  background-color: var(--color-surface);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-family-base);
+  font-size: 0.88rem;
+}
+
+.data-table th {
+  text-align: left;
+  padding: var(--space-md) var(--space-lg);
+  font-weight: 600;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-stone);
+  white-space: nowrap;
+}
+
+.data-table td {
+  padding: var(--space-md) var(--space-lg);
+  border-top: 1px solid var(--color-surface-muted);
+  color: var(--color-forest);
+  vertical-align: middle;
+}
+
+.data-table tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.data-table tbody tr:hover {
+  background-color: var(--color-surface-muted);
+}
+
+.data-table__cell--right {
+  text-align: right;
+}
+
+@media (max-width: 48rem) {
+  .data-table__scroll {
+    overflow-x: visible;
+    background-color: transparent;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  .data-table {
+    display: block;
+  }
+
+  .data-table thead {
+    display: none;
+  }
+
+  .data-table tbody {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .data-table tr {
+    display: block;
+    background-color: var(--color-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: var(--space-lg);
+    font-size: 1.05rem;
+  }
+
+  .data-table td {
+    display: block;
+    padding: 0.6rem 0;
+    border-top: none;
+    text-align: left !important;
+  }
+
+  .data-table td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    font-family: var(--font-family-base);
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-stone);
+    margin-bottom: 0.3rem;
+  }
+
+  .data-table__cell--acciones {
+    margin-top: var(--space-xs);
+    padding-top: var(--space-sm) !important;
+    border-top: 1px solid var(--color-surface-muted) !important;
+  }
+}

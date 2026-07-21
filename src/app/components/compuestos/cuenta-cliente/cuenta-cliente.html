@@ -1,0 +1,78 @@
+<div class="cuenta-cliente">
+  <div class="cuenta-cliente__resumen">
+    <div>
+      <span class="cuenta-cliente__resumen-label">Saldo actual</span>
+      <span
+        class="cuenta-cliente__resumen-saldo"
+        [class.cuenta-cliente__resumen-saldo--deudor]="saldoActual() > 0"
+      >
+        ${{ saldoActual().toFixed(2) }}
+      </span>
+    </div>
+    <app-button variant="outline" [loading]="exportando()" (click)="exportarPdf()">
+      <span class="cuenta-cliente__exportar">
+        <app-icon name="file-pdf" [size]="16"></app-icon>
+        Exportar PDF
+      </span>
+    </app-button>
+  </div>
+
+  @if (cargando()) {
+    <div class="cuenta-cliente__cargando">
+      <app-spinner></app-spinner>
+    </div>
+  } @else {
+    <div class="cuenta-cliente__tabla-envoltorio">
+      <table class="cuenta-cliente__tabla">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Concepto</th>
+            <th class="cuenta-cliente__cell--right">Debe</th>
+            <th class="cuenta-cliente__cell--right">Haber</th>
+            <th class="cuenta-cliente__cell--right">Saldo</th>
+            <th class="cuenta-cliente__cell--right"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (venta of ventas(); track venta.publicId) {
+            <tr>
+              <td data-label="Fecha">{{ venta.fecha | date: 'dd/MM/yyyy' }}</td>
+              <td data-label="Concepto">{{ venta.concepto }}</td>
+              <td class="cuenta-cliente__cell--right" data-label="Debe">{{ venta.debe.toFixed(2) }}</td>
+              <td class="cuenta-cliente__cell--right" data-label="Haber">{{ venta.haber.toFixed(2) }}</td>
+              <td class="cuenta-cliente__cell--right" data-label="Saldo">{{ venta.saldo.toFixed(2) }}</td>
+              <td class="cuenta-cliente__cell--right" data-label="">
+                @if (venta.publicId === ultimoPublicId()) {
+                  <button
+                    class="cuenta-cliente__eliminar-btn"
+                    type="button"
+                    [disabled]="eliminandoUltimo()"
+                    (click)="eliminarUltimo()"
+                    aria-label="Eliminar ultimo movimiento"
+                  >
+                    <app-icon name="trash" [size]="16"></app-icon>
+                  </button>
+                }
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td class="cuenta-cliente__vacio" colspan="6">Sin movimientos registrados</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  <form class="cuenta-cliente__form" [formGroup]="formulario" (ngSubmit)="agregarMovimiento()">
+    <span class="eyebrow">Nuevo movimiento</span>
+    <div class="cuenta-cliente__form-fila">
+      <app-input label="Concepto" formControlName="concepto" [required]="true"></app-input>
+      <app-input label="Debe" type="number" formControlName="debe"></app-input>
+      <app-input label="Haber" type="number" formControlName="haber"></app-input>
+      <app-button type="submit" [loading]="agregando()">Agregar</app-button>
+    </div>
+  </form>
+</div>
